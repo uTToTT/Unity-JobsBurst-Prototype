@@ -13,12 +13,6 @@ public partial struct RotatingCubeSystem : ISystem
     [BurstCompile]
     public void OnUpdate(ref SystemState state)
     {
-        //foreach ((RefRW<LocalTransform> localTransform, RefRO<RotateSpeed> rotateSpeed)
-        //    in SystemAPI.Query<RefRW<LocalTransform>, RefRO<RotateSpeed>>())
-        //{
-
-        //}
-
         RotatingCubeJob rotatingCubeJob = new RotatingCubeJob
         {
             DeltaTime = SystemAPI.Time.DeltaTime
@@ -28,6 +22,7 @@ public partial struct RotatingCubeSystem : ISystem
     }
 
     [BurstCompile]
+    [WithNone(typeof(Player))]
     public partial struct RotatingCubeJob : IJobEntity
     {
         public float DeltaTime;
@@ -36,11 +31,11 @@ public partial struct RotatingCubeSystem : ISystem
         {
             float power = 1f;
 
-            for (int i = 0; i < 10_000; i++)
-            {
-                power *= 2f;
-                power /= 2f;
-            }
+            //for (int i = 0; i < 10_000; i++)
+            //{
+            //    power *= 2f;
+            //    power /= 2f;
+            //}
 
             localTransform = localTransform.RotateY(rotateSpeed.Value * DeltaTime * power);
         }
