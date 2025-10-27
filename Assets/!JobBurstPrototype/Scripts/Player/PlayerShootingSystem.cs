@@ -12,10 +12,10 @@ public partial class PlayerShootingSystem : SystemBase
 
     protected override void OnUpdate()
     {
-        if (!Input.GetKeyDown(KeyCode.Space))
-        {
-            return;
-        }
+        //if (!Input.GetKeyDown(KeyCode.Space))
+        //{
+        //    return;
+        //}
 
         SpawnCubesConfig spawnCubesConfig = SystemAPI.GetSingleton<SpawnCubesConfig>();
 

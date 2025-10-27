@@ -250,7 +250,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!136 &913295221
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -432,7 +432,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpawnCubesConfigAuthoring
   CubePrefab: {fileID: 9051552413758084127, guid: d33068a6957532f4aae99e33a0b897d5, type: 3}
-  AmountToSpawn: 10
+  AmountToSpawn: 10000
 --- !u!4 &1768661294
 Transform:
   m_ObjectHideFlags: 0

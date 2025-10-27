@@ -8,24 +8,65 @@ public partial class SpawnCubesSystem : SystemBase
     protected override void OnCreate()
     {
         RequireForUpdate<SpawnCubesConfig>();
+        RequireForUpdate<SpawnCubesController>();
     }
 
     protected override void OnUpdate()
     {
-        this.Enabled = false;
+        var config = SystemAPI.GetSingleton<SpawnCubesConfig>();
+        var controllerEntity = SystemAPI.GetSingletonEntity<SpawnCubesController>();
+        var controller = SystemAPI.GetSingleton<SpawnCubesController>();
 
-        SpawnCubesConfig spawnCubesConfig = SystemAPI.GetSingleton<SpawnCubesConfig>();
+        if (!controller.ShouldSpawn)
+            return;
 
-        for (int i = 0; i < spawnCubesConfig.AmountToSpawn; i++)
+        var gridSize = controller.GridSize;
+        var startPos = controller.StartPos;
+        var offset = controller.Offset;
+
+        int spawned = 0;
+
+        for (int x = 0; x < gridSize.x; x++)
         {
-            Entity spawnedEntity = EntityManager.Instantiate(spawnCubesConfig.CubePrefabEntity);
-            EntityManager.SetComponentData(spawnedEntity, new LocalTransform
+            for (int y = 0; y < gridSize.y; y++)
             {
-                Position = new float3(UnityEngine.Random.Range(-10, +5), 1, UnityEngine.Random.Range(-5f, +10f)),
-                Rotation = Quaternion.identity,
-                Scale = 1f
+                float3 position = startPos + new float3(x * offset, 0f, y * offset);
+
+                Entity e = EntityManager.Instantiate(config.CubePrefabEntity);
+                EntityManager.SetComponentData(e, new LocalTransform
+                {
+                    Position = position,
+                    Rotation = quaternion.identity,
+                    Scale = 1f
+                });
+
+                spawned++;
+            }
+        }
+
+        EntityManager.SetComponentData(
+            SystemAPI.GetSingletonEntity<SpawnCubesController>(),
+            new SpawnCubesController
+            {
+                ShouldSpawn = false,
+                GridSize = controller.GridSize,
+                StartPos = controller.StartPos,
+                Offset = controller.Offset,
             });
 
-        }
+        controller.ShouldSpawn = false;
+        controller.SpawnedAmount += spawned;
+
+        EntityManager.SetComponentData(controllerEntity, controller);
     }
+}
+
+
+public struct SpawnCubesController : IComponentData
+{
+    public bool ShouldSpawn;
+    public float2 GridSize;
+    public float3 StartPos;
+    public float Offset;
+    public int SpawnedAmount;
 }

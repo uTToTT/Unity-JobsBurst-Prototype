@@ -16,7 +16,6 @@ public class SpawnCubesConfigAuthoring : MonoBehaviour
             AddComponent(entity, new SpawnCubesConfig
             {
                 CubePrefabEntity = GetEntity(authoring.CubePrefab, TransformUsageFlags.Dynamic),
-                AmountToSpawn = authoring.AmountToSpawn,
             });
         }
     }
@@ -25,5 +24,4 @@ public class SpawnCubesConfigAuthoring : MonoBehaviour
 public struct SpawnCubesConfig : IComponentData
 {
     public Entity CubePrefabEntity;
-    public int AmountToSpawn;
 }
